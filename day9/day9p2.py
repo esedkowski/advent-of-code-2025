@@ -1,12 +1,11 @@
 import pylab as pl
 from matplotlib import collections as mc
+
 INPUT = "input"
 TEST_INPUT = "test_input"
-own = "own_input"
 
 file = TEST_INPUT
 file = INPUT
-# file = own
 
 def abs(number):
     return number if number >= 0 else number * (-1)
@@ -193,56 +192,50 @@ def find_biggest_square(tiles, v_lines, h_lines):
 
     return biggest_square
 
+def plot(tiles, square, name="graph"):
+    xs = []
+    ys = []
+    fig, ax = pl.subplots()
+
+    for point in tiles:
+        xs.append(point[0])
+        ys.append(point[1])
+
+    lines = []
+    for i in range(-1, len(tiles) - 1):
+        lines.append([tiles[i], tiles[i+1]])
+    lc = mc.LineCollection(lines, linewidth=2)
+    ax.add_collection(lc)
+    ax.margins(0.1)
+
+    p1 = biggest_square[0]
+    p3 = biggest_square[1]
+    p2 = (p1[0], p3[1])
+    p4 = (p3[0], p1[1])
+
+    points = [p1, p2, p3, p4]
+    xs1 = []
+    ys1 = []
+
+    for point in points:
+        xs1.append(point[0])
+        ys1.append(point[1])
+
+    lines1 = []
+    for i in range(-1, 3):
+        lines1.append([points[i], points[i+1]])
+    lc1 = mc.LineCollection(lines1, linewidth=2, colors='red')
+    ax.add_collection(lc1)
+
+    pl.savefig(name + "png")
+    pl.close()
 
 
 tiles = get_data(file)
-#print(is_inside((4, 3), tiles))
 h_lines, v_lines = get_lines(tiles)
 h_lines = sort_lines(h_lines)
 v_lines = sort_lines(v_lines)
 biggest_square = find_biggest_square(tiles, v_lines, h_lines)
 print(biggest_square[0], biggest_square[1], biggest_square[2])
 
-xs = []
-ys = []
-count = 0
-itin = []
-fig, ax = pl.subplots()
-
-for point in tiles:
-    xs.append(point[0])
-    ys.append(point[1])
-
-lines = []
-for i in range(-1, len(tiles) - 1):
-    lines.append([tiles[i], tiles[i+1]])
-lc = mc.LineCollection(lines, linewidth=2)
-ax.add_collection(lc)
-
-ax.margins(0.1)
-# pl.scatter(xs, ys)
-
-p1 = biggest_square[0]
-p3 = biggest_square[1]
-p2 = (p1[0], p3[1])
-p4 = (p3[0], p1[1])
-
-points = [p1, p2, p3, p4]
-xs1 = []
-ys1 = []
-
-for point in points:
-    xs1.append(point[0])
-    ys1.append(point[1])
-
-lines1 = []
-for i in range(-1, 3):
-    lines1.append([points[i], points[i+1]])
-lc1 = mc.LineCollection(lines1, linewidth=2, colors='red')
-ax.add_collection(lc1)
-
-# pl.scatter(xs1, ys1)
-
-
-pl.savefig("test.png")
-pl.close()
+plot(tiles, biggest_square)
