@@ -71,49 +71,6 @@ def is_on_edge(p, v_lines, h_lines):
             return True
     return False
 
-"""
-def is_inside(p, v_lines, h_lines):
-    num_of_v_lines = len(v_lines)
-    num_of_h_lines = len(h_lines)
-    inside = False
-
-    count = 0
-
-    x = p[0]
-    y = p[1]
-
-    for v_line in v_lines:
-        if x == v_line[0]:
-            count += 1
-
-
-    for i in range(num_of_v_lines - 1):
-        v_line1 = v_lines[i]
-        if (v_line1[1] <= p[1] <= v_line1[2]) and p[0] >= v_line1[0]:
-            for j in range(i + 1, num_of_v_lines):
-                v_line2 = v_lines[j]
-                if (v_line2[1] <= p[1] <= v_line2[2]) and p[0] <= v_line2[0]:
-                    inside = True
-                    break
-
-    if not inside:
-        # print(p, False, "1")
-        return False
-
-    inside = False
-
-    for i in range(num_of_h_lines - 1):
-        h_line1 = h_lines[i]
-        if (h_line1[1] <= p[0] <= h_line1[2]) and p[1] >= h_line1[0]:
-            for j in range(i + 1, num_of_h_lines):
-                h_line2 = h_lines[j]
-                if (h_line2[1] <= p[0] <= h_line2[2]) and p[1] <= h_line2[0]:
-                    inside = True
-                    break
-    # print(p, inside, "2")
-    return inside
-"""
-
 def is_inside(p, tiles): # with huge help of chatgpt
     x, y = p
     inside = False
@@ -125,22 +82,15 @@ def is_inside(p, tiles): # with huge help of chatgpt
         x2, y2 = tiles[(i + 1) % n]
 
         if (x == x1 and y == y1) or (x == x2 and y == y2):
-            # print("test1")
             return True
         if y1 != y2:
-            # print(x1, y1, x2, y2)
-            # if ((y1 > y) != (y2 > y)) or y == max(y1, y2):
             if min(y1, y2) <= y < max(y1, y2):
-                # print(x1, y1, x2, y2)
                 if x < x1:
                     count += 1
 
-    # print(count)
     if count % 2 == 1:
-        # print("test2")
         return True
     else:
-        # print("test3")
         return False
 
 
@@ -169,7 +119,6 @@ def crosses_line(p1, p2, v_lines, h_lines):
 def find_biggest_square(tiles, v_lines, h_lines):
     num_of_tiles = len(tiles)
     biggest_area = 0
-    # print(v_lines, h_lines)
     for i in range(num_of_tiles):
         for j in range(i + 1, num_of_tiles):
             p1 = tiles[i]
@@ -183,7 +132,6 @@ def find_biggest_square(tiles, v_lines, h_lines):
                     for h in range(k + 1, 4):
                         if points[k][0] == points[h][0] or points[k][1] == points[h][1]:
                             valid = valid and not crosses_line(points[k], points[h], v_lines, h_lines)
-                            # print(points[i], points[j], points, valid)
                 if valid:
                     area = (abs(p2[0] - p1[0]) + 1) * (abs(p2[1] - p1[1]) + 1) # +1 to handle 'of by 1 error'
                     if area > biggest_area:
